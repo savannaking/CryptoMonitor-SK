@@ -29,20 +29,25 @@ namespace CryptoMonitorJob
 
             foreach (var currency in currencies)
             {
+                var rowCount = tableClient.Query<TableEntity>(x => x.PartitionKey == currency && x.RowKey == "Count")
+                    .SingleOrDefault()?.GetInt32("Count");
+                var lastAlert = tableClient.Query<TableEntity>(x => x.PartitionKey == currency && x.RowKey == "LastAlert")
+                    .SingleOrDefault()?.GetDateTimeOffset("Timestamp").Value.LocalDateTime;
                 var currentPriceData = await client.Data.GetSpotPriceAsync($"{ currency }-USD");
                 var currentPriceDouble = Convert.ToDouble(currentPriceData.Data.Amount);
-                var previousPricesData = tableClient.Query<TableEntity>(x => x.PartitionKey == currency && x.RowKey != "Count");
+                var previousPricesData = tableClient.Query<TableEntity>(x => x.PartitionKey == currency &&
+                    x.RowKey != "Count" && x.RowKey != "LastAlert").Where(x => x.Timestamp.Value.LocalDateTime > DateTime.Now.AddHours(-1));
+
                 if (previousPricesData != null)
                 {
                     var previousPriceEntity = previousPricesData
                     .Where(x =>
-                        ((currentPriceDouble > x.GetDouble("Price") * 1.05) ||
-                        (currentPriceDouble < x.GetDouble("Price") * .95)) &&
-                            x.Timestamp >= DateTime.Now.AddMinutes(-30))
-                    .OrderByDescending(x => x.Timestamp)
-                    ?.FirstOrDefault();
+                        currentPriceDouble > x.GetDouble("Price") * 1.05 ||
+                        currentPriceDouble < x.GetDouble("Price") * .95)
+                    .OrderByDescending(x => x.Timestamp.Value.LocalDateTime)
+                    .FirstOrDefault();
 
-                    if (previousPriceEntity != null)
+                    if (previousPriceEntity != null && (lastAlert == null || lastAlert < DateTime.Now.AddHours(-1)))
                     {
                         var previousPrice = previousPriceEntity.GetDouble("Price");
 
@@ -51,19 +56,19 @@ namespace CryptoMonitorJob
                         {
                             //send alert price is high
                             Send($"{currency} price is up!", previousPriceEntity, currentPriceDouble, currency, logger);
+                            await tableClient.UpsertEntityAsync(new TableEntity(currency, "LastAlert"));
 
                         }
                         else if (currentPriceDouble < previousPrice)
                         {
                             //send alert price is low
                             Send($"{currency} price is down!", previousPriceEntity, currentPriceDouble, currency, logger);
+                            await tableClient.UpsertEntityAsync(new TableEntity(currency, "LastAlert"));
                         }
                     }
                 }
 
-                var rowCount = tableClient.Query<TableEntity>(x => x.PartitionKey == currency && x.RowKey  == "Count")
-                    .SingleOrDefault()?.GetInt32("Count");
-                if (rowCount != null) rowCount++;
+                if (rowCount != null && rowCount <= 25000) rowCount++;
                 else rowCount = 0;
 
                 await tableClient.UpsertEntityAsync(new TableEntity(currency, rowCount.ToString()) {
@@ -75,7 +80,6 @@ namespace CryptoMonitorJob
                     { "Count", rowCount }
                 });
             }
-
         }
 
 
@@ -90,7 +94,7 @@ namespace CryptoMonitorJob
             email.Subject = subject;
             email.Body = new TextPart(TextFormat.Html)
             {
-                Text = $"{ currency }'s price has gone from { from.GetDouble("Price") } at { from.GetDateTime("Timestamp") } to { to } at { DateTime.Now }."
+                Text = $"{ currency }'s price has gone from { from.GetDouble("Price") } at { from.GetDateTimeOffset("Timestamp").Value.LocalDateTime } UTC to { to } at { DateTime.Now } UTC."
             };
 
             // send email
