@@ -2142,6 +2142,8 @@
         "framework": ".NETCoreApp,Version=v5.0",
         "dependencies": {
           "AntDesign": "0.8.2",
+          "Azure.Extensions.AspNetCore.Configuration.Secrets": "1.0.0",
+          "Azure.Identity": "1.2.2",
           "CryptoMonitorGUI.Shared": "1.0.0",
           "Microsoft.AspNetCore.Components.WebAssembly": "5.0.7",
           "System.Net.Http.Json": "5.0.0"

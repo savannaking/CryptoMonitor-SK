@@ -11,5 +11,13 @@
       "type": "image/png",
       "sizes": "512x512"
     }
-  ]
+  ],
+  "logging": {
+    "applicationInsights": {
+      "samplingSettings": {
+        "isEnabled": true,
+        "excludedTypes": "Request"
+      }
+    }
+  }
 }
