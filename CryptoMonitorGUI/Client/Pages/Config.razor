@@ -1,0 +1,63 @@
+﻿@page "/"
+@using CryptoMonitorGUI.Shared
+@inject HttpClient Http
+@inject MessageService Message
+
+
+
+<Row><PageHeader Title="CryptoMonitor Configuration"></PageHeader></Row>
+<Row>
+    <Col Md="1" />
+    <Col Md="10">
+    <Form TModel="CryptoConfig" Model="configViewModel" OnFinish="HandleSubmit" OnFinishFailed="HandleError">
+        <FormItem Label="Currencies">
+            <Select Mode="multiple"
+                    Placeholder="Please select"
+                    @bind-Values="@configViewModel.Currencies"
+                    TItemValue="string"
+                    TItem="string">
+                <SelectOptions>
+                    @foreach (var currency in AvailableCurrencies)
+                    {
+                        <SelectOption TItem="string" TItemValue="string" Value="@currency" Label="@currency" />
+                    }
+                </SelectOptions>
+            </Select>
+        </FormItem>
+        <FormItem Label="Threshold for alert (at +/- what % to send)">
+            <AntDesign.InputNumber @bind-Value="configViewModel.Threshold" Min="0" TValue="double?"></AntDesign.InputNumber>
+        </FormItem>
+        <FormItem Label="Frequency of alerts (minutes)">
+            <AntDesign.InputNumber @bind-Value="configViewModel.Frequency" Min="0" TValue="int?"></AntDesign.InputNumber>
+        </FormItem>
+        <FormItem WrapperColOffset="8" WrapperColSpan="16">
+            <Button Type="@ButtonType.Primary" HtmlType="submit">
+                Submit
+            </Button>
+        </FormItem>
+    </Form>
+    </Col>
+</Row>
+@code
+{ private IEnumerable<string> AvailableCurrencies = new List<string>() { "BTC", "ETH", "AMP", "MATIC", "DOGE", "XLM", "ETC", "GRT", "ALGO" };
+
+
+    CryptoConfig configViewModel = new();
+
+    private async Task HandleSubmit()
+    {
+        await Http.PostAsJsonAsync<CryptoConfig>("Config", configViewModel);
+        await Message.Success("Settings saved successfully!");
+    }
+
+    private async Task HandleError()
+    {
+        await Message.Error("Error saving settings");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        configViewModel = await Http.GetFromJsonAsync<CryptoConfig>("Config");
+    }
+
+}

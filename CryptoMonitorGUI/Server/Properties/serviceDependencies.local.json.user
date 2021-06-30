@@ -1,0 +1,24 @@
+{
+  "dependencies": {
+    "storage1": {
+      "restored": true,
+      "restoreTime": "2021-06-28T03:28:25.9777139Z"
+    },
+    "secrets1": {
+      "restored": true,
+      "restoreTime": "2021-06-28T03:28:13.1952142Z"
+    }
+  },
+  "parameters": {
+    "storage1.resourceGroupName": {
+      "Name": "storage1.resourceGroupName",
+      "Type": "resourceGroup",
+      "Value": "cryptomonitor-rg"
+    },
+    "storage1.subscriptionId": {
+      "Name": "storage1.subscriptionId",
+      "Type": "subscription",
+      "Value": "54e726ca-2197-4310-a74e-e4b52582d1ec"
+    }
+  }
+}

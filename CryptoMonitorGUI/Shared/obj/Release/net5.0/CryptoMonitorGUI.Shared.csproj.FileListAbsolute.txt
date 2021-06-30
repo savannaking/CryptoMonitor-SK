@@ -1,0 +1,12 @@
+C:\Users\Savanna.king\SK\CryptoMonitorGUI\CryptoMonitorGUI\Shared\bin\Release\net5.0\CryptoMonitorGUI.Shared.deps.json
+C:\Users\Savanna.king\SK\CryptoMonitorGUI\CryptoMonitorGUI\Shared\bin\Release\net5.0\CryptoMonitorGUI.Shared.dll
+C:\Users\Savanna.king\SK\CryptoMonitorGUI\CryptoMonitorGUI\Shared\bin\Release\net5.0\ref\CryptoMonitorGUI.Shared.dll
+C:\Users\Savanna.king\SK\CryptoMonitorGUI\CryptoMonitorGUI\Shared\bin\Release\net5.0\CryptoMonitorGUI.Shared.pdb
+C:\Users\Savanna.king\SK\CryptoMonitorGUI\CryptoMonitorGUI\Shared\obj\Release\net5.0\CryptoMonitorGUI.Shared.csproj.AssemblyReference.cache
+C:\Users\Savanna.king\SK\CryptoMonitorGUI\CryptoMonitorGUI\Shared\obj\Release\net5.0\CryptoMonitorGUI.Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Savanna.king\SK\CryptoMonitorGUI\CryptoMonitorGUI\Shared\obj\Release\net5.0\CryptoMonitorGUI.Shared.AssemblyInfoInputs.cache
+C:\Users\Savanna.king\SK\CryptoMonitorGUI\CryptoMonitorGUI\Shared\obj\Release\net5.0\CryptoMonitorGUI.Shared.AssemblyInfo.cs
+C:\Users\Savanna.king\SK\CryptoMonitorGUI\CryptoMonitorGUI\Shared\obj\Release\net5.0\CryptoMonitorGUI.Shared.csproj.CoreCompileInputs.cache
+C:\Users\Savanna.king\SK\CryptoMonitorGUI\CryptoMonitorGUI\Shared\obj\Release\net5.0\CryptoMonitorGUI.Shared.dll
+C:\Users\Savanna.king\SK\CryptoMonitorGUI\CryptoMonitorGUI\Shared\obj\Release\net5.0\ref\CryptoMonitorGUI.Shared.dll
+C:\Users\Savanna.king\SK\CryptoMonitorGUI\CryptoMonitorGUI\Shared\obj\Release\net5.0\CryptoMonitorGUI.Shared.pdb
